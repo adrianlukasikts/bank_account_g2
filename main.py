@@ -24,11 +24,11 @@ cur.execute("""CREATE TABLE IF NOT EXISTS accounts
 
 cur.execute("""CREATE TABLE IF NOT EXISTS transactions
                (
-                   id          INTEGER PRIMARY KEY AUTOINCREMENT,
-                   amount      DECIMAL(10, 2) NOT NULL,
+                   id              INTEGER PRIMARY KEY AUTOINCREMENT,
+                   amount          DECIMAL(10, 2) NOT NULL,
                    account_from_id INTEGER        NOT NULL,
                    account_to_id   INTEGER        NOT NULL,
-                   date        VARCHAR(20)    NOT NULL,
+                   date            VARCHAR(20)    NOT NULL,
                    FOREIGN KEY (account_from_id) REFERENCES accounts (id),
                    FOREIGN KEY (account_to_id) REFERENCES accounts (id),
                    CHECK (account_from_id != account_to_id)
@@ -48,13 +48,25 @@ cur.execute("""CREATE TABLE IF NOT EXISTS credentials
 program_is_finished = False
 
 
+# def add(table_name, **kwargs)
+
+def add(table_name: str, params: dict[str, object]) -> None:
+    cur.execute(f"INSERT INTO {table_name}({', '.join(params.keys())}) VALUES ({', '.join(['?'] * len(params))})",
+                list(params.values()))
+    con.commit()
+
 
 def add_user(name, surname, email, phone, login, password):
-    cur.execute("""INSERT INTO users(name, surname, email, phone) VALUES (?, ?, ?, ?)""", (name, surname, email, phone))
+    cur.execute("""INSERT INTO users(name, surname, email, phone)
+                   VALUES (?, ?, ?, ?)""", (name, surname, email, phone))
     con.commit()
-    uuid = cur.execute("""SELECT id FROM users WHERE email = ?""", (email)).fetchone()[0]
-    cur.execute("""INSERT INTO credentials(login, password, user_id) VALUES (?, ?, ?)""", (login, password, uuid))
+    uuid = cur.execute("""SELECT id
+                          FROM users
+                          WHERE email = ?""", (email)).fetchone()[0]
+    cur.execute("""INSERT INTO credentials(login, password, user_id)
+                   VALUES (?, ?, ?)""", (login, password, uuid))
     con.commit()
+
 
 while not program_is_finished:
     print("1. Log in")
@@ -65,21 +77,15 @@ while not program_is_finished:
         case "1":
             ...
         case "2":
-            add_user(input("Enter your Name: "), input("Enter your Surname: "), input("Enter your E-Mail: "), input("Enter your Phone Number: "), input("Enter "), input())
+            email = None
+            # add_user(input("Enter your Name: "), input("Enter your Surname: "), input("Enter your E-Mail: "), input("Enter your Phone Number: "), input("Enter "), input())
+            add("users", {"name": input("Enter your Name: "), "surname": input("Enter your Surname: "),
+                          "email": (email := input("Enter your E-Mail: ")), "phone": input("Enter your Phone Number: ")})
+            uuid = cur.execute("""SELECT id
+                                  FROM users
+                                  WHERE email = ?""", [email]).fetchone()[0]
+            add("credentials", {"login":input("enter your login"), "password":input("enter your password")})
         case "3":
             program_is_finished = True
         case _:
             print("Please enter a correct option")
-
-
-
-
-
-
-
-
-
-
-
-
-
