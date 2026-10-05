@@ -51,8 +51,6 @@ cur.execute("""CREATE TABLE IF NOT EXISTS credentials
 program_is_finished = False
 
 
-# def add(table_name, **kwargs)
-
 def add(table_name: str, **params) -> None:
     cur.execute(f"INSERT INTO {table_name}({', '.join(params.keys())}) VALUES ({', '.join(['?'] * len(params))})",
                 list(params.values()))
@@ -80,8 +78,9 @@ while not program_is_finished:
         case "1":
             ...
         case "2":
-            name, surname, email, phone, login, password = input("Enter your Name: "), input("Enter your Surname: "), input("Enter your E-Mail: "), input("Enter your Phone Number: "), input("enter your login"), input("enter your password")
-            # add_user(input("Enter your Name: "), input("Enter your Surname: "), input("Enter your E-Mail: "), input("Enter your Phone Number: "), input("Enter "), input())
+            name, surname, email, phone, login, password = input("Enter your Name: "), input(
+                "Enter your Surname: "), input("Enter your E-Mail: "), input("Enter your Phone Number: "), input(
+                "enter your login"), input("enter your password")
             add(table_name="users", name=name, surname=surname, email=email, phone=phone)
             uuid = cur.execute("""SELECT id
                                   FROM users
