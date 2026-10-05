@@ -50,7 +50,7 @@ program_is_finished = False
 
 # def add(table_name, **kwargs)
 
-def add(table_name: str, params: dict[str, object]) -> None:
+def add(table_name: str, **params) -> None:
     cur.execute(f"INSERT INTO {table_name}({', '.join(params.keys())}) VALUES ({', '.join(['?'] * len(params))})",
                 list(params.values()))
     con.commit()
@@ -77,14 +77,14 @@ while not program_is_finished:
         case "1":
             ...
         case "2":
-            email = None
+            name, surname, email, phone, login, password = input("Enter your Name: "), input("Enter your Surname: "), input("Enter your E-Mail: "), input("Enter your Phone Number: "), input("enter your login"), input("enter your password")
             # add_user(input("Enter your Name: "), input("Enter your Surname: "), input("Enter your E-Mail: "), input("Enter your Phone Number: "), input("Enter "), input())
-            add("users", {"name": input("Enter your Name: "), "surname": input("Enter your Surname: "),
-                          "email": (email := input("Enter your E-Mail: ")), "phone": input("Enter your Phone Number: ")})
+            add(table_name="users", name=name, surname=surname,
+                          email=email, phone=phone)
             uuid = cur.execute("""SELECT id
                                   FROM users
                                   WHERE email = ?""", [email]).fetchone()[0]
-            add("credentials", {"login":input("enter your login"), "password":input("enter your password")})
+            add("credentials", login=login, password=password)
         case "3":
             program_is_finished = True
         case _:
