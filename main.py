@@ -1,9 +1,9 @@
 import sqlite3
-import uuid
 
 con = sqlite3.connect("bank.db")
 cur = con.cursor()
 
+cur.execute("""DROP TABLE users""")
 cur.execute("""CREATE TABLE IF NOT EXISTS users
                (
                    id      INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -13,6 +13,7 @@ cur.execute("""CREATE TABLE IF NOT EXISTS users
                    phone   VARCHAR(12) NOT NULL
                )""")
 
+cur.execute("""DROP TABLE accounts""")
 cur.execute("""CREATE TABLE IF NOT EXISTS accounts
                (
                    id      INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -22,6 +23,7 @@ cur.execute("""CREATE TABLE IF NOT EXISTS accounts
                )
             """)
 
+cur.execute("""DROP TABLE transactions""")
 cur.execute("""CREATE TABLE IF NOT EXISTS transactions
                (
                    id              INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -35,6 +37,7 @@ cur.execute("""CREATE TABLE IF NOT EXISTS transactions
                )
             """)
 
+cur.execute("""DROP TABLE credentials""")
 cur.execute("""CREATE TABLE IF NOT EXISTS credentials
                (
                    id       INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -79,12 +82,11 @@ while not program_is_finished:
         case "2":
             name, surname, email, phone, login, password = input("Enter your Name: "), input("Enter your Surname: "), input("Enter your E-Mail: "), input("Enter your Phone Number: "), input("enter your login"), input("enter your password")
             # add_user(input("Enter your Name: "), input("Enter your Surname: "), input("Enter your E-Mail: "), input("Enter your Phone Number: "), input("Enter "), input())
-            add(table_name="users", name=name, surname=surname,
-                          email=email, phone=phone)
+            add(table_name="users", name=name, surname=surname, email=email, phone=phone)
             uuid = cur.execute("""SELECT id
                                   FROM users
                                   WHERE email = ?""", [email]).fetchone()[0]
-            add("credentials", login=login, password=password)
+            add("credentials", login=login, password=password, user_id=uuid)
         case "3":
             program_is_finished = True
         case _:
