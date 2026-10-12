@@ -3,7 +3,7 @@ import sqlite3
 con = sqlite3.connect("bank.db")
 cur = con.cursor()
 
-cur.execute("""DROP TABLE users""")
+cur.execute("""DROP TABLE IF EXISTS users""")
 cur.execute("""CREATE TABLE IF NOT EXISTS users
                (
                    id      INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -13,7 +13,7 @@ cur.execute("""CREATE TABLE IF NOT EXISTS users
                    phone   VARCHAR(12) NOT NULL
                )""")
 
-cur.execute("""DROP TABLE accounts""")
+cur.execute("""DROP TABLE IF EXISTS accounts""")
 cur.execute("""CREATE TABLE IF NOT EXISTS accounts
                (
                    id      INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -23,7 +23,7 @@ cur.execute("""CREATE TABLE IF NOT EXISTS accounts
                )
             """)
 
-cur.execute("""DROP TABLE transactions""")
+cur.execute("""DROP TABLE IF EXISTS transactions""")
 cur.execute("""CREATE TABLE IF NOT EXISTS transactions
                (
                    id              INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -37,7 +37,7 @@ cur.execute("""CREATE TABLE IF NOT EXISTS transactions
                )
             """)
 
-cur.execute("""DROP TABLE credentials""")
+cur.execute("""DROP TABLE IF EXISTS credentials""")
 cur.execute("""CREATE TABLE IF NOT EXISTS credentials
                (
                    id       INTEGER PRIMARY KEY AUTOINCREMENT,

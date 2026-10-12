@@ -1,11 +1,6 @@
 import sqlite3
 from functions import add
 
-
-
-
-
-
 program_is_finished = False
 
 con = sqlite3.connect("bank.db")
