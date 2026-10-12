@@ -9,7 +9,7 @@ cur.execute("""CREATE TABLE IF NOT EXISTS users
                    id      INTEGER PRIMARY KEY AUTOINCREMENT,
                    name    VARCHAR(50) NOT NULL,
                    surname VARCHAR(50) NOT NULL,
-                   email   VARCHAR(50) NOT NULL UNIQUE,
+                   email   VARCHAR(50) NOT NULL ,
                    phone   VARCHAR(12) NOT NULL
                )""")
 

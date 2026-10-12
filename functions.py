@@ -6,5 +6,9 @@ def add(con: Connection, table_name: str, **params) -> None:
                 list(params.values()))
     con.commit()
 
-def select():
-    pass
+def select(con: Connection, table_name: str, **params):
+    result = con.cursor().execute(f"SELECT * FROM {table_name} WHERE {' AND '.join([f'{k} = ?' for k in params])}",
+                list(params.values()))
+    return result
+
+
