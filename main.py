@@ -1,12 +1,10 @@
 import sqlite3
-from sqlite3 import Connection
+from functions import add
 
 
 
-def add(con: Connection, table_name: str, **params) -> None:
-    con.cursor().execute(f"INSERT INTO {table_name}({', '.join(params.keys())}) VALUES ({', '.join(['?'] * len(params))})",
-                list(params.values()))
-    con.commit()
+
+
 
 program_is_finished = False
 
