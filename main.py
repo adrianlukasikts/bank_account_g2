@@ -7,7 +7,7 @@ con = sqlite3.connect("bank.db")
 
 while not program_is_finished:
     print("1. Log in")
-    print("2. Sing up")
+    print("2. Sign up")
     print("3. Exit Program")
     user_input = input("Enter number for program execution: ")
     match user_input:
